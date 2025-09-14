@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import service from '../appwrite/config';
 import { Container, Postcard } from '../components';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
 	const [posts, setPosts] = useState([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		service.getPosts().then((posts) => {
@@ -19,9 +21,10 @@ function Home() {
 				<Container>
 					<div className="flex flex-wrap">
 						<div className="p-2 w-full">
-							<h1 className='text-2xl font-bold hover:text-gray-500'>
+							<button className='text-2xl font-bold hover:text-gray-500 cursor-pointer'
+								onClick={() => (navigate('/login'))}>
 								Login to read posts
-							</h1>
+							</button>
 						</div>
 					</div>
 				</Container>
