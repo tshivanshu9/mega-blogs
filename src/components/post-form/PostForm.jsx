@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Button, Input, Select, RTE } from '../index';
 import service from '../../appwrite/config';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { emptyPosts } from '../../store/postsSlice';
 
 function PostForm({ post }) {
 	const { register, handleSubmit, setValue, watch, control, getValues } = useForm({
@@ -14,10 +15,10 @@ function PostForm({ post }) {
 	});
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const userData = useSelector(state => state.auth.userData);
 
 	const submit = async (data) => {
-		console.log("post data...", data);
 		if (post) {
 			const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
 			if (file) {
@@ -29,22 +30,22 @@ function PostForm({ post }) {
 			const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
 			Object.assign(data, { featuredImage: file?.$id });
 			const dbPost = await service.createPost({ ...data, userId: userData.$id });
-			console.log("dbPost...", dbPost);
 			if (dbPost) navigate(`/post/${dbPost.$id}`)
 		}
+		dispatch(emptyPosts());
 	};
 
 	const slugTransform = useCallback((value) => {
-    if (value && typeof value === 'string') {
-        return value
-            .trim()
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[^a-z0-9\-]/g, '')
-            .replace(/^-+|-+$/g, '');
-    }
-    return '';
-}, []);
+		if (value && typeof value === 'string') {
+			return value
+				.trim()
+				.toLowerCase()
+				.replace(/\s+/g, '-')
+				.replace(/[^a-z0-9\-]/g, '')
+				.replace(/^-+|-+$/g, '');
+		}
+		return '';
+	}, []);
 
 	useEffect(() => {
 		const subscription = watch((value, { name }) => {

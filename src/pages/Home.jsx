@@ -2,21 +2,32 @@ import { useEffect, useState } from 'react';
 import service from '../appwrite/config';
 import { Container, Loader, Postcard } from '../components';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addPosts } from '../store/postsSlice';
 
 function Home() {
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
-	const isLoggedIn = useSelector(state => state.auth.status)
+	const dispatch = useDispatch();
+	const { isLoggedIn, postStatus, storePosts } = useSelector(state => ({
+		isLoggedIn: state.auth.status,
+		postStatus: state.posts.status,
+		storePosts: state.posts.posts,
+	}));
 
 	useEffect(() => {
-		service.getPosts().then((posts) => {
-			if (posts.rows?.length) {
-				setPosts(posts.rows);
-			}
+		if (postStatus) {
+			setPosts(storePosts);
 			setLoading(false);
-		})
+		}
+		else {
+			service.getPosts().then((posts) => {
+				if (posts.rows?.length) setPosts(posts.rows);
+				dispatch(addPosts(posts.rows));
+			});
+			setLoading(false);
+		}
 	}, []);
 
 	if (loading) {
