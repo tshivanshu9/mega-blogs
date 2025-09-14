@@ -16,15 +16,14 @@ export class Service {
 	}
 
 	async createPost({ title, slug, content, featuredImage, status, userId }) {
+		console.log("create post...", title, slug, content, featuredImage, status, userId);
 		try {
 			return await this.database.createRow({
-				params: {
-					databaseId: conf.appwriteDatabaseId,
-					tableId: conf.appwriteCollectionId,
-					rowId: slug,
-					data: {
-						title, status, content, featuredImage, userId,
-					}
+				databaseId: conf.appwriteDatabaseId,
+				tableId: conf.appwriteCollectionId,
+				rowId: slug,
+				data: {
+					title, status, content, featuredImage, userId,
 				}
 			});
 		} catch (error) {
@@ -38,13 +37,11 @@ export class Service {
 	async updatePost(slug, { title, content, featuredImage, status }) {
 		try {
 			return await this.database.updateRow({
-				params: {
-					databaseId: conf.appwriteDatabaseId,
-					tableId: conf.appwriteCollectionId,
-					rowId: slug,
-					data: {
-						title, status, content, featuredImage,
-					}
+				databaseId: conf.appwriteDatabaseId,
+				tableId: conf.appwriteCollectionId,
+				rowId: slug,
+				data: {
+					title, status, content, featuredImage,
 				}
 			});
 		} catch (error) {
@@ -58,11 +55,9 @@ export class Service {
 	async deletePost(slug) {
 		try {
 			await this.database.deleteRow({
-				params: {
-					databaseId: conf.appwriteDatabaseId,
-					tableId: conf.appwriteCollectionId,
-					rowId: slug,
-				}
+				databaseId: conf.appwriteDatabaseId,
+				tableId: conf.appwriteCollectionId,
+				rowId: slug,
 			});
 			return true;
 		} catch (error) {
@@ -77,11 +72,9 @@ export class Service {
 	async getPost(slug) {
 		try {
 			return await this.database.getRow({
-				params: {
-					databaseId: conf.appwriteDatabaseId,
-					tableId: conf.appwriteCollectionId,
-					rowId: slug,
-				}
+				databaseId: conf.appwriteDatabaseId,
+				tableId: conf.appwriteCollectionId,
+				rowId: slug,
 			});
 		} catch (error) {
 			console.log({
@@ -95,11 +88,9 @@ export class Service {
 	async getPosts(queries = [Query.equal('status', 'active')]) {
 		try {
 			return await this.database.listRows({
-				params: {
-					databaseId: conf.appwriteDatabaseId,
-					tableId: conf.appwriteCollectionId,
-					queries,
-				}
+				databaseId: conf.appwriteDatabaseId,
+				tableId: conf.appwriteCollectionId,
+				queries,
 			});
 		} catch (error) {
 			console.log({
@@ -113,11 +104,9 @@ export class Service {
 	async uploadFile(file) {
 		try {
 			return await this.bucket.createFile({
-				params: {
-					bucketId: conf.appwriteBucketId,
-					fileId: ID.unique(), 
-					file,
-				}
+				bucketId: conf.appwriteBucketId,
+				fileId: ID.unique(),
+				file,
 			});
 		} catch (error) {
 			console.log({
@@ -131,10 +120,8 @@ export class Service {
 	async deleteFile(fileId) {
 		try {
 			await this.bucket.deleteFile({
-				params: {
-					bucketId: conf.appwriteBucketId,
-					fileId,
-				}
+				bucketId: conf.appwriteBucketId,
+				fileId,
 			});
 			return true;
 		} catch (error) {
@@ -148,10 +135,8 @@ export class Service {
 
 	getFilePreview(fileId) {
 		return this.bucket.getFilePreview({
-			params: {
-				bucketId: conf.appwriteBucketId,
-				fileId,
-			}
+			bucketId: conf.appwriteBucketId,
+			fileId,
 		});
 	}
 };

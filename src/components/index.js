@@ -12,5 +12,9 @@ import Postcard from "./Postcard";
 import AuthLayout from './AuthLayout';
 import Button from './Button';
 import Select from "./Select";
- 
-export { Header, Footer, Container, Logo, LogoutBtn, Input, RTE, Signup, Login, PostForm, Postcard, AuthLayout, Button, Select };
+import Loader from "./Loader";
+
+export {
+	Header, Footer, Container, Logo, LogoutBtn, Input, RTE, Signup, Login,
+	PostForm, Postcard, AuthLayout, Button, Select, Loader
+};

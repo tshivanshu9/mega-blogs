@@ -17,26 +17,34 @@ function PostForm({ post }) {
 	const userData = useSelector(state => state.auth.userData);
 
 	const submit = async (data) => {
+		console.log("post data...", data);
 		if (post) {
 			const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
 			if (file) {
 				await service.deleteFile(post.featuredImage);
 			}
 			const dbPost = await service.updatePost(post.$id, { ...data, featuredImage: file?.$id });
-			if (dbPost) navigate(`/post/${post.$id}`)
+			if (dbPost) navigate(`/post/${dbPost.$id}`)
 		} else {
 			const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
 			Object.assign(data, { featuredImage: file?.$id });
 			const dbPost = await service.createPost({ ...data, userId: userData.$id });
-			if (dbPost) navigate(`/post/${post.$id}`)
+			console.log("dbPost...", dbPost);
+			if (dbPost) navigate(`/post/${dbPost.$id}`)
 		}
 	};
 
 	const slugTransform = useCallback((value) => {
-		if (value && typeof value === 'string')
-			return value.trim().toLowerCase().replace(/^[a-zA-Z\d\s]+/g, '-').replace(/\s/g, '-');
-		return '';
-	}, []);
+    if (value && typeof value === 'string') {
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9\-]/g, '')
+            .replace(/^-+|-+$/g, '');
+    }
+    return '';
+}, []);
 
 	useEffect(() => {
 		const subscription = watch((value, { name }) => {
@@ -93,7 +101,7 @@ function PostForm({ post }) {
 					className="mb-4"
 					{...register("status", { required: true })}
 				/>
-				<Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
+				<Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full button">
 					{post ? "Update" : "Submit"}
 				</Button>
 			</div>

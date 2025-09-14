@@ -1,4 +1,3 @@
-import React from 'react';
 import { Container, Logo, LogoutBtn } from '../index.js';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -36,7 +35,7 @@ function Header() {
 	];
 
 	return (
-		<header className='py-3 shadow bg-gray-500'>
+		<header className='py-3 shadow bg-yellow-400'>
 			<Container>
 				<nav className='flex'>
 					<div className='mr-4'>
@@ -47,11 +46,12 @@ function Header() {
 					<ul className='flex ml-auto'>
 						{navItems.map(item => (
 							item.active ? <li key={item.name}>
-								<button key={item.name} className='inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full cursor-pointer'
-								onClick={() => navigate(item.slug)}>{item.name}</button>
+								<button key={item.name} className='inline-bock px-4 py-2 duration-200 hover:bg-blue-100 
+								rounded-full cursor-pointer mx-0.5'
+									onClick={() => navigate(item.slug)}>{item.name}</button>
 							</li> : null
 						))}
-						{authStatus && (<li><LogoutBtn/></li>)}
+						{authStatus && (<li><LogoutBtn /></li>)}
 					</ul>
 				</nav>
 			</Container>

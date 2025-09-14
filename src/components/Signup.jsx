@@ -13,9 +13,11 @@ function Signup() {
 	const { register, handleSubmit } = useForm();
 
 	const create = async (data) => {
+		console.log("data...", data);
 		setError('');
 		try {
 			const createData = await authService.createAccount(data);
+			console.log("createData...", createData);
 			if (createData) {
 				const userData = await authService.getCurrentUser();
 				if (userData) {
@@ -24,6 +26,7 @@ function Signup() {
 				}
 			}
 		} catch (error) {
+			console.log("error...", error);
 			setError(error.message);
 		}
 	};
@@ -59,7 +62,7 @@ function Signup() {
 						})} />
 						<Input label='Password: ' type='Password' placeholder='Enter your password'
 							{...register('password', { required: true })} />
-						<Button type='submit' className='w-full'>Create Account</Button>
+						<Button type='submit' className='w-full cursor-pointer button'>Create Account</Button>
 					</div>
 				</form>
 			</div>

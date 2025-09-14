@@ -1,19 +1,27 @@
 import { useEffect, useState } from 'react';
 import service from '../appwrite/config';
-import { Container, Postcard } from '../components';
+import { Container, Loader, Postcard } from '../components';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Home() {
 	const [posts, setPosts] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
+	const isLoggedIn = useSelector(state => state.auth.status)
 
 	useEffect(() => {
 		service.getPosts().then((posts) => {
-			if (posts.length) {
-				setPosts(posts.documents);
+			if (posts.rows?.length) {
+				setPosts(posts.rows);
 			}
+			setLoading(false);
 		})
 	}, []);
+
+	if (loading) {
+		return <Loader />;
+	}
 
 	if (!posts?.length) {
 		return (
@@ -21,10 +29,17 @@ function Home() {
 				<Container>
 					<div className="flex flex-wrap">
 						<div className="p-2 w-full">
-							<button className='text-2xl font-bold hover:text-gray-500 cursor-pointer'
-								onClick={() => (navigate('/login'))}>
-								Login to read posts
-							</button>
+							{!isLoggedIn ?
+								<button className='text-2xl font-bold px-8 py-4 hover:text-gray-500 cursor-pointer rounded-2xl shadow-lg transition'
+									onClick={() => (navigate('/login'))}>
+									Login to read posts
+								</button>
+								:
+								<button className='text-2xl font-bold px-8 py-4 hover:text-gray-500 cursor-pointer rounded-2xl shadow-lg transition'
+									onClick={() => (navigate('/add-post'))}>
+									No posts yet, click here and add your first post!
+								</button>
+							}
 						</div>
 					</div>
 				</Container>
