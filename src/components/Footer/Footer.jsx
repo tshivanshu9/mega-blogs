@@ -9,7 +9,7 @@ function Footer() {
           <div className="-m-6 flex flex-wrap">
             <div className="w-full p-6 md:w-1/2 lg:w-5/12">
               <div className="flex h-full flex-col justify-between">
-                <Link className="mb-4 inline-flex items-center" to='/'>
+                <Link className="mb-4 inline-flex items-center" to="/">
                   <Logo width="100px" />
                 </Link>
                 <div>
@@ -138,7 +138,7 @@ function Footer() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default Footer
+export default Footer;
