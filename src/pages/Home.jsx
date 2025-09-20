@@ -10,9 +10,9 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.auth.status);
-  const postStatus = useSelector(state => state.posts.status);
-  const storePosts = useSelector(state => state.posts.posts);
+  const isLoggedIn = useSelector((state) => state.auth.status);
+  const postStatus = useSelector((state) => state.posts.status);
+  const storePosts = useSelector((state) => state.posts.posts);
 
   useEffect(() => {
     if (postStatus && storePosts?.length) {

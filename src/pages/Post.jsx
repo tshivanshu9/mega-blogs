@@ -35,44 +35,44 @@ export default function Post() {
     });
   };
 
-return post ? (
-  <div className="py-8">
-    <Container>
-      <div className="max-w-2xl mx-auto bg-white rounded-xl border p-6 shadow-md relative">
-        {isAuthor && (
-          <div className="absolute top-6 right-6 flex gap-4">
-            <Link to={`/edit-post/${post.$id}`}>
+  return post ? (
+    <div className="py-8">
+      <Container>
+        <div className="max-w-2xl mx-auto bg-white rounded-xl border p-6 shadow-md relative">
+          {isAuthor && (
+            <div className="absolute top-6 right-6 flex gap-4">
+              <Link to={`/edit-post/${post.$id}`}>
+                <Button
+                  bgColor="bg-green-500"
+                  className="button cursor-pointer w-20"
+                >
+                  Edit
+                </Button>
+              </Link>
               <Button
-                bgColor="bg-green-500"
+                bgColor="bg-red-500"
+                onClick={deletePost}
                 className="button cursor-pointer w-20"
               >
-                Edit
+                Delete
               </Button>
-            </Link>
-            <Button
-              bgColor="bg-red-500"
-              onClick={deletePost}
-              className="button cursor-pointer w-20"
-            >
-              Delete
-            </Button>
+            </div>
+          )}
+
+          <div className="w-full flex justify-center mb-4">
+            <img
+              src={appwriteService.getFilePreview(post.featuredImage)}
+              alt={post.title}
+              className="rounded-xl object-cover max-h-64 w-full"
+              style={{ maxWidth: '400px' }}
+            />
           </div>
-        )}
 
-        <div className="w-full flex justify-center mb-4">
-          <img
-            src={appwriteService.getFilePreview(post.featuredImage)}
-            alt={post.title}
-            className="rounded-xl object-cover max-h-64 w-full"
-            style={{ maxWidth: '400px' }}
-          />
+          <h1 className="text-3xl font-bold mb-4 text-center">{post.title}</h1>
+
+          <div className="browser-css">{parse(post.content)}</div>
         </div>
-
-        <h1 className="text-3xl font-bold mb-4 text-center">{post.title}</h1>
-
-        <div className="browser-css">{parse(post.content)}</div>
-      </div>
-    </Container>
-  </div>
-) : null;
+      </Container>
+    </div>
+  ) : null;
 }

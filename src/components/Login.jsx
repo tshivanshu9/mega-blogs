@@ -69,7 +69,7 @@ function Login() {
             <Input
               label="Password: "
               type="password"
-							autoComplete="new-password"
+              autoComplete="new-password"
               placeholder="Enter your password"
               {...register('password', { required: true })}
             />
