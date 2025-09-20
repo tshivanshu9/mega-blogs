@@ -14,7 +14,7 @@ function MyPosts() {
   const userData = useSelector((state) => state.auth.userData);
 
   useEffect(() => {
-    if (postStatus) {
+    if (postStatus && storePosts?.length) {
       setPosts(storePosts);
       setLoading(false);
     } else {
@@ -22,19 +22,20 @@ function MyPosts() {
         .getPosts([
           Query.equal('status', 'active'),
           Query.equal('userId', userData.$id),
+          Query.orderDesc('$createdAt'),
         ])
         .then((posts) => {
           if (posts.rows?.length) {
             setPosts(posts.rows);
             dispatch(addMyPosts(posts.rows || []));
+            setLoading(false);
           }
         });
-      setLoading(false);
     }
-  }, []);
+  }, [postStatus, storePosts, dispatch]);
 
   if (loading) return <Loader />;
-  if (!posts?.length) {
+  else if (!posts?.length) {
     return (
       <div className="w-full py-8 mt-4 text-center">
         <Container>
