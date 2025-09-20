@@ -5,13 +5,14 @@ import service from '../../appwrite/config';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { emptyPosts } from '../../store/postsSlice';
+import { toast } from 'react-hot-toast';
 
 function PostForm({ post }) {
   const { register, handleSubmit, setValue, watch, control, getValues } =
     useForm({
       defaultValues: {
         title: post?.title || '',
-        slug: post?.slug || '',
+        slug: post?.$id || '',
         content: post?.content || '',
         status: post?.status || 'active',
       },
@@ -33,7 +34,10 @@ function PostForm({ post }) {
         ...data,
         featuredImage: file?.$id,
       });
-      if (dbPost) navigate(`/post/${dbPost.$id}`);
+      if (dbPost) {
+        toast.success('Post updated successfully!');
+        navigate(`/post/${dbPost.$id}`);
+      }
     } else {
       const file = data.image[0]
         ? await service.uploadFile(data.image[0])
@@ -43,7 +47,10 @@ function PostForm({ post }) {
         ...data,
         userId: userData.$id,
       });
-      if (dbPost) navigate(`/post/${dbPost.$id}`);
+      if (dbPost) {
+        toast.success('Post created successfully!');
+        navigate(`/post/${dbPost.$id}`);
+      }
     }
     dispatch(emptyPosts());
   };
