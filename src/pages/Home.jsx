@@ -61,12 +61,14 @@ function Home() {
   return (
     <div className="py-8 w-full">
       <Container>
-        {posts?.length &&
-          posts.map((post) => (
-            <div className="p-2 w-1/4" key={post.$id}>
-              <Postcard {...post} />
-            </div>
-          ))}
+        <div className="flex flex-wrap">
+          {posts?.length &&
+            posts.map((post) => (
+              <div className="p-2 w-1/4" key={post.$id}>
+                <Postcard {...post} />
+              </div>
+            ))}
+        </div>
       </Container>
     </div>
   );

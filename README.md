@@ -87,7 +87,7 @@ npm run dev
 ```
 src/
   components/      # Reusable UI components
-  pages/           # Page components (Home, Login, Signup, AllPosts, etc.)
+  pages/           # Page components (Home, Login, Signup, MyPosts, etc.)
   store/           # Redux slices and store config
   appwrite/        # Appwrite service and config
   assets/          # Images and static assets

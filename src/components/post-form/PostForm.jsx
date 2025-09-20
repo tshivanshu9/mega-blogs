@@ -4,7 +4,7 @@ import { Button, Input, Select, RTE } from '../index';
 import service from '../../appwrite/config';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { emptyPosts } from '../../store/postsSlice';
+import { emptyMyPosts, emptyPosts } from '../../store/postsSlice';
 import { toast } from 'react-hot-toast';
 
 function PostForm({ post }) {
@@ -53,6 +53,7 @@ function PostForm({ post }) {
       }
     }
     dispatch(emptyPosts());
+    dispatch(emptyMyPosts());
   };
 
   const slugTransform = useCallback((value) => {
@@ -132,7 +133,7 @@ function PostForm({ post }) {
         <Button
           type="submit"
           bgColor={post ? 'bg-green-500' : undefined}
-          className="w-full button"
+          className="w-full button cursor-pointer"
         >
           {post ? 'Update' : 'Submit'}
         </Button>

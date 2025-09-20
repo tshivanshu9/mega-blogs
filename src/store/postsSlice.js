@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   status: false,
   posts: [],
+  myPosts: [],
+  myPostsStatus: false,
 };
 
 const postsSlice = createSlice({
@@ -17,9 +19,18 @@ const postsSlice = createSlice({
       state.status = false;
       state.posts = [];
     },
+    addMyPosts: (state, action) => {
+      state.myPostsStatus = true;
+      state.myPosts = Array.isArray(action.payload) ? action.payload : [];
+    },
+    emptyMyPosts: (state) => {
+      state.myPostsStatus = false;
+      state.myPosts = [];
+    },
   },
 });
 
-export const { addPosts, emptyPosts } = postsSlice.actions;
+export const { addPosts, emptyPosts, addMyPosts, emptyMyPosts } =
+  postsSlice.actions;
 
 export default postsSlice.reducer;

@@ -4,7 +4,7 @@ import appwriteService from '../appwrite/config';
 import { Button, Container } from '../components';
 import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
-import { emptyPosts } from '../store/postsSlice';
+import { emptyMyPosts, emptyPosts } from '../store/postsSlice';
 
 export default function Post() {
   const [post, setPost] = useState(null);
@@ -30,6 +30,7 @@ export default function Post() {
       if (status) {
         appwriteService.deleteFile(post.featuredImage);
         dispatch(emptyPosts());
+        dispatch(emptyMyPosts());
         navigate('/');
       }
     });
