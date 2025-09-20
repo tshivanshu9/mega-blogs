@@ -13,6 +13,7 @@ function Home() {
   const isLoggedIn = useSelector((state) => state.auth.status);
   const postStatus = useSelector((state) => state.posts.status);
   const storePosts = useSelector((state) => state.posts.posts);
+  const userData = useSelector((state) => state.auth.userData);
 
   useEffect(() => {
     if (postStatus && storePosts?.length) {
@@ -63,11 +64,13 @@ function Home() {
       <Container>
         <div className="flex flex-wrap">
           {posts?.length &&
-            posts.map((post) => (
-              <div className="p-2 w-1/4" key={post.$id}>
-                <Postcard {...post} />
+            posts.map((post) => {
+              const isAuthor = post && userData ? post.userId === userData.$id : false;
+              return (<div className="p-2 w-1/4" key={post.$id}>
+                <Postcard {...post} isAuthor={isAuthor} />
               </div>
-            ))}
+              );
+            })}
         </div>
       </Container>
     </div>
