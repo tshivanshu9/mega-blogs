@@ -4,7 +4,8 @@ import appwriteService from '../appwrite/config';
 import { Button, Container } from '../components';
 import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
-import { emptyMyPosts, emptyPosts } from '../store/postsSlice';
+import { emptyPosts } from '../store/postsSlice';
+import { emptyPosts as emptyMyPosts } from '../store/myPostsSlice';
 
 export default function Post() {
   const [post, setPost] = useState(null);

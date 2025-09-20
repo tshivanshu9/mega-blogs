@@ -4,7 +4,8 @@ import { Button, Input, Select, RTE } from '../index';
 import service from '../../appwrite/config';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { emptyMyPosts, emptyPosts } from '../../store/postsSlice';
+import { emptyPosts } from '../../store/postsSlice';
+import { emptyPosts as emptyMyPosts } from '../../store/myPostsSlice';
 import { toast } from 'react-hot-toast';
 
 function PostForm({ post }) {

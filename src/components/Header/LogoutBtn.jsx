@@ -2,7 +2,8 @@ import { useDispatch } from 'react-redux';
 import authService from '../../appwrite/auth';
 import { logout } from '../../store/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { emptyMyPosts, emptyPosts } from '../../store/postsSlice';
+import { emptyPosts } from '../../store/postsSlice';
+import { emptyPosts as emptyMyPosts } from '../../store/myPostsSlice';
 
 function LogoutBtn() {
   const dispatch = useDispatch();

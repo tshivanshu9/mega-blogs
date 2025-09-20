@@ -5,7 +5,8 @@ import { Button, Logo, Input } from './index';
 import { useDispatch } from 'react-redux';
 import authService from '../appwrite/auth';
 import { useForm } from 'react-hook-form';
-import { emptyMyPosts, emptyPosts } from '../store/postsSlice';
+import { emptyPosts } from '../store/postsSlice';
+import { emptyPosts as emptyMyPosts } from '../store/myPostsSlice';
 
 function Login() {
   const navigate = useNavigate();

@@ -2,15 +2,15 @@ import service from '../appwrite/config';
 import { Postcard, Container, Loader } from '../components';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addMyPosts } from '../store/postsSlice';
+import { addPosts } from '../store/myPostsSlice';
 import { Query } from 'appwrite';
 
 function MyPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const postStatus = useSelector((state) => state.posts.myPostsStatus);
-  const storePosts = useSelector((state) => state.posts.myPosts);
+  const postStatus = useSelector((state) => state.myPosts.status);
+  const storePosts = useSelector((state) => state.myPosts.posts);
   const userData = useSelector((state) => state.auth.userData);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function MyPosts() {
         .then((posts) => {
           if (posts.rows?.length) {
             setPosts(posts.rows);
-            dispatch(addMyPosts(posts.rows || []));
+            dispatch(addPosts(posts.rows || []));
             setLoading(false);
           }
         });
