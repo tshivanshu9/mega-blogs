@@ -10,24 +10,22 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoggedIn, postStatus, storePosts } = useSelector((state) => ({
-    isLoggedIn: state.auth.status,
-    postStatus: state.posts.status,
-    storePosts: state.posts.posts,
-  }));
+  const isLoggedIn = useSelector(state => state.auth.status);
+  const postStatus = useSelector(state => state.posts.status);
+  const storePosts = useSelector(state => state.posts.posts);
 
   useEffect(() => {
-    if (postStatus) {
+    if (postStatus && storePosts?.length) {
       setPosts(storePosts);
       setLoading(false);
     } else {
       service.getPosts().then((posts) => {
-        if (posts.rows?.length) setPosts(posts.rows);
-        dispatch(addPosts(posts.rows));
+        if (posts.rows?.length) setPosts(posts.rows || []);
+        dispatch(addPosts(posts.rows || []));
+        setLoading(false);
       });
-      setLoading(false);
     }
-  }, []);
+  }, [postStatus, storePosts, dispatch]);
 
   if (loading) {
     return <Loader />;

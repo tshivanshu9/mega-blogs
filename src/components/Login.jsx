@@ -5,6 +5,7 @@ import { Button, Logo, Input } from './index';
 import { useDispatch } from 'react-redux';
 import authService from '../appwrite/auth';
 import { useForm } from 'react-hook-form';
+import { emptyPosts } from '../store/postsSlice';
 
 function Login() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function Login() {
       if (session) {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(authLogin(userData));
+        dispatch(emptyPosts());
         navigate('/');
       }
     } catch (error) {

@@ -8,10 +8,8 @@ function AllPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const { postStatus, storePosts } = useSelector((state) => ({
-    postStatus: state.posts.status,
-    storePosts: state.posts.posts,
-  }));
+  const postStatus = useSelector((state) => state.posts.status);
+  const storePosts = useSelector((state) => state.posts.posts);
 
   useEffect(() => {
     if (postStatus) {

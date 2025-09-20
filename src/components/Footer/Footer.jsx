@@ -14,7 +14,8 @@ function Footer() {
                 </Link>
                 <div>
                   <p className="text-sm text-gray-600">
-                    &copy; Copyright {new Date().getFullYear()}. All Rights Reserved by SupaBlogs
+                    &copy; Copyright {new Date().getFullYear()}. All Rights
+                    Reserved by SupaBlogs
                   </p>
                 </div>
               </div>

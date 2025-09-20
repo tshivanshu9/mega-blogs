@@ -11,7 +11,7 @@ const postsSlice = createSlice({
   reducers: {
     addPosts: (state, action) => {
       state.status = true;
-      state.posts = action.payload;
+      state.posts = Array.isArray(action.payload) ? action.payload : [];
     },
     emptyPosts: (state) => {
       state.status = false;
