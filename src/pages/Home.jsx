@@ -4,29 +4,46 @@ import { Container, Loader, Postcard } from '../components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPosts } from '../store/postsSlice';
+import { Query } from 'appwrite';
 
 function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.status);
-  const postStatus = useSelector((state) => state.posts.status);
-  const storePosts = useSelector((state) => state.posts.posts);
+  // const postStatus = useSelector((state) => state.posts.status);
+  // const storePosts = useSelector((state) => state.posts.posts);
   const userData = useSelector((state) => state.auth.userData);
 
+  // useEffect(() => {
+  //   if (postStatus && storePosts?.length) {
+  //     setPosts(storePosts);
+  //     setLoading(false);
+  //   } else {
+  //     service.getPosts([Query.equal('status', 'active'), Query.orderDesc('$createdAt')
+  //       , Query.limit(8)
+  //     ]).then((posts) => {
+  //       if (posts.rows?.length) setPosts(posts.rows || []);
+  //       dispatch(addPosts(posts.rows || []));
+  //       setLoading(false);
+  //     });
+  //   }
+  // }, [postStatus, storePosts, dispatch]);
+
   useEffect(() => {
-    if (postStatus && storePosts?.length) {
-      setPosts(storePosts);
+    setLoading(true);
+    service.getPosts([Query.equal('status', 'active'), Query.orderDesc('$createdAt')
+      , Query.limit(8), Query.offset((page - 1) * 8)
+    ]).then((result) => {
+      setPosts(result.rows || []);
+      setHasMore(result.rows.length === 8);
       setLoading(false);
-    } else {
-      service.getPosts().then((posts) => {
-        if (posts.rows?.length) setPosts(posts.rows || []);
-        dispatch(addPosts(posts.rows || []));
-        setLoading(false);
-      });
-    }
-  }, [postStatus, storePosts, dispatch]);
+      // dispatch(addPosts(result.rows || []));
+    });
+  }, [page]);
 
   if (loading) {
     return <Loader />;
@@ -73,6 +90,24 @@ function Home() {
             })}
         </div>
       </Container>
+      <div className="flex justify-between items-center mt-8 px-8">
+        {page > 1 ? (
+          <button
+            onClick={() => setPage(page - 1)}
+            className="bg-[#b54117] text-white px-6 py-3 rounded-2xl shadow-lg font-semibold transition hover:bg-[#a13a13]"
+          >
+            Previous
+          </button>
+        ) : <span />}
+        {hasMore ? (
+          <button
+            onClick={() => setPage(page + 1)}
+            className="bg-[#b54117] text-white px-6 py-3 rounded-2xl shadow-lg font-semibold transition hover:bg-[#a13a13]"
+          >
+            Next
+          </button>
+        ) : <span />}
+      </div>
     </div>
   );
 }

@@ -30,8 +30,8 @@ export default function Post() {
     appwriteService.deletePost(post.$id).then((status) => {
       if (status) {
         appwriteService.deleteFile(post.featuredImage);
-        dispatch(emptyPosts());
-        dispatch(emptyMyPosts());
+        // dispatch(emptyPosts());
+        // dispatch(emptyMyPosts());
         navigate('/');
       }
     });

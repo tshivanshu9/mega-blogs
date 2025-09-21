@@ -8,31 +8,30 @@ import { Query } from 'appwrite';
 function MyPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
-  const postStatus = useSelector((state) => state.myPosts.status);
-  const storePosts = useSelector((state) => state.myPosts.posts);
+  // const dispatch = useDispatch();
+  // const postStatus = useSelector((state) => state.myPosts.status);
+  // const storePosts = useSelector((state) => state.myPosts.posts);
   const userData = useSelector((state) => state.auth.userData);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    if (postStatus && storePosts?.length) {
-      setPosts(storePosts);
-      setLoading(false);
-    } else {
+    setLoading(true);
       service
         .getPosts([
           Query.equal('status', 'active'),
           Query.equal('userId', userData.$id),
           Query.orderDesc('$createdAt'),
+          Query.limit(4),
+          Query.offset((page - 1) * 4)
         ])
         .then((posts) => {
-          if (posts.rows?.length) {
             setPosts(posts.rows);
-            dispatch(addPosts(posts.rows || []));
+            setHasMore(posts.rows.length === 4);
+            // dispatch(addPosts(posts.rows || []));
             setLoading(false);
-          }
         });
-    }
-  }, [postStatus, storePosts, dispatch]);
+  }, [page]);
 
   if (loading) return <Loader />;
   else if (!posts?.length) {
@@ -62,6 +61,24 @@ function MyPosts() {
             ))}
         </div>
       </Container>
+      <div className="flex justify-between items-center mt-8 px-8">
+        {page > 1 ? (
+          <button
+            onClick={() => setPage(page - 1)}
+            className="bg-[#b54117] text-white px-6 py-3 rounded-2xl shadow-lg font-semibold transition hover:bg-[#a13a13]"
+          >
+            Previous
+          </button>
+        ) : <span />}
+        {hasMore ? (
+          <button
+            onClick={() => setPage(page + 1)}
+            className="bg-[#b54117] text-white px-6 py-3 rounded-2xl shadow-lg font-semibold transition hover:bg-[#a13a13]"
+          >
+            Next
+          </button>
+        ) : <span />}
+      </div>
     </div>
   );
 }

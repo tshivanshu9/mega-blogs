@@ -21,8 +21,8 @@ function Login() {
       if (session) {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(authLogin(userData));
-        dispatch(emptyPosts());
-        dispatch(emptyMyPosts());
+        // dispatch(emptyPosts());
+        // dispatch(emptyMyPosts());
         navigate('/');
       }
     } catch (error) {

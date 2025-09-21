@@ -53,8 +53,8 @@ function PostForm({ post }) {
         navigate(`/post/${dbPost.$id}`);
       }
     }
-    dispatch(emptyPosts());
-    dispatch(emptyMyPosts());
+    // dispatch(emptyPosts());
+    // dispatch(emptyMyPosts());
   };
 
   const slugTransform = useCallback((value) => {

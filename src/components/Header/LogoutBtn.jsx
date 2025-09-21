@@ -12,8 +12,8 @@ function LogoutBtn() {
   const logoutHandler = async () => {
     await authService.logout();
     dispatch(logout());
-    dispatch(emptyPosts());
-    dispatch(emptyMyPosts());
+    // dispatch(emptyPosts());
+    // dispatch(emptyMyPosts());
     navigate('/login');
   };
 
