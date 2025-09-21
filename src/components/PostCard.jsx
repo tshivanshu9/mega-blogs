@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Postcard({ $id, title, featuredImage, isAuthor }) {
   return (
     <Link to={`/post/${$id}`}>
-      <div className="w-full p-4 pt-8 rounded-xl bg-gray-100 relative">
+      <div className="bg-gray-100 rounded-xl shadow hover:shadow-lg transition mx-auto w-full max-w-xs p-4 pt-8 relative flex flex-col items-center">
         {isAuthor && (
           <span className="absolute top-2 right-2 bg-[#b54117] text-white text-sm px-3 py-1 rounded-full shadow-md flex items-center gap-1 z-10">
             <svg

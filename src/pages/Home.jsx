@@ -82,18 +82,14 @@ function Home() {
     );
   }
   return (
-    <div className="py-8 w-full">
+    <div className="py-12 w-full">
       <Container>
-        <div className="flex flex-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {posts?.length &&
             posts.map((post) => {
               const isAuthor =
                 post && userData ? post.userId === userData.$id : false;
-              return (
-                <div className="p-2 w-1/4" key={post.$id}>
-                  <Postcard {...post} isAuthor={isAuthor} />
-                </div>
-              );
+              return <Postcard {...post} isAuthor={isAuthor} />;
             })}
         </div>
       </Container>
