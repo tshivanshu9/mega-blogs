@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Input, Select, RTE } from '../index';
+import { Button, Input, Select, RTE, ButtonLoader } from '../index';
 import service from '../../appwrite/config';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,36 +22,44 @@ function PostForm({ post }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
+  const [loading, setLoading] = useState(false);
 
   const submit = async (data) => {
-    if (post) {
-      const file = data.image[0]
-        ? await service.uploadFile(data.image[0])
-        : null;
-      if (file) {
-        await service.deleteFile(post.featuredImage);
+    setLoading(true);
+    try {
+      if (post) {
+        const file = data.image[0]
+          ? await service.uploadFile(data.image[0])
+          : null;
+        if (file) {
+          await service.deleteFile(post.featuredImage);
+        }
+        const dbPost = await service.updatePost(post.$id, {
+          ...data,
+          featuredImage: file?.$id,
+        });
+        if (dbPost) {
+          toast.success('Post updated successfully!');
+          navigate(`/post/${dbPost.$id}`);
+        }
+      } else {
+        const file = data.image[0]
+          ? await service.uploadFile(data.image[0])
+          : null;
+        Object.assign(data, { featuredImage: file?.$id });
+        const dbPost = await service.createPost({
+          ...data,
+          userId: userData.$id,
+        });
+        if (dbPost) {
+          toast.success('Post created successfully!');
+          navigate(`/post/${dbPost.$id}`);
+        }
       }
-      const dbPost = await service.updatePost(post.$id, {
-        ...data,
-        featuredImage: file?.$id,
-      });
-      if (dbPost) {
-        toast.success('Post updated successfully!');
-        navigate(`/post/${dbPost.$id}`);
-      }
-    } else {
-      const file = data.image[0]
-        ? await service.uploadFile(data.image[0])
-        : null;
-      Object.assign(data, { featuredImage: file?.$id });
-      const dbPost = await service.createPost({
-        ...data,
-        userId: userData.$id,
-      });
-      if (dbPost) {
-        toast.success('Post created successfully!');
-        navigate(`/post/${dbPost.$id}`);
-      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
     // dispatch(emptyPosts());
     // dispatch(emptyMyPosts());
@@ -134,9 +142,15 @@ function PostForm({ post }) {
         <Button
           type="submit"
           bgColor={post ? 'bg-green-500' : undefined}
-          className="w-full button cursor-pointer"
+          className="w-full button cursor-pointer h-12 flex items-center justify-center"
+          disabled={loading}
         >
-          {post ? 'Update' : 'Submit'}
+          {loading && (
+            <ButtonLoader
+              text={post ? 'Updating post...' : 'Creating post...'}
+            />
+          )}
+          {!loading && (post ? 'Update' : 'Submit')}
         </Button>
       </div>
     </form>

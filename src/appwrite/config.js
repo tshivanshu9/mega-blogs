@@ -55,6 +55,7 @@ export class Service {
         message: 'Error updating post',
         error: JSON.stringify(error),
       });
+      throw error;
     }
   }
 

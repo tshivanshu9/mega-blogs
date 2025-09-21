@@ -22,8 +22,8 @@ function MyPosts() {
         Query.equal('status', 'active'),
         Query.equal('userId', userData.$id),
         Query.orderDesc('$createdAt'),
-        Query.limit(4),
-        Query.offset((page - 1) * 4),
+        Query.limit(8),
+        Query.offset((page - 1) * 8),
       ])
       .then((posts) => {
         setPosts(posts.rows);
