@@ -35,14 +35,19 @@ function Home() {
 
   useEffect(() => {
     setLoading(true);
-    service.getPosts([Query.equal('status', 'active'), Query.orderDesc('$createdAt')
-      , Query.limit(8), Query.offset((page - 1) * 8)
-    ]).then((result) => {
-      setPosts(result.rows || []);
-      setHasMore(result.rows.length === 8);
-      setLoading(false);
-      // dispatch(addPosts(result.rows || []));
-    });
+    service
+      .getPosts([
+        Query.equal('status', 'active'),
+        Query.orderDesc('$createdAt'),
+        Query.limit(8),
+        Query.offset((page - 1) * 8),
+      ])
+      .then((result) => {
+        setPosts(result.rows || []);
+        setHasMore(result.rows.length === 8);
+        setLoading(false);
+        // dispatch(addPosts(result.rows || []));
+      });
   }, [page]);
 
   if (loading) {
@@ -82,10 +87,12 @@ function Home() {
         <div className="flex flex-wrap">
           {posts?.length &&
             posts.map((post) => {
-              const isAuthor = post && userData ? post.userId === userData.$id : false;
-              return (<div className="p-2 w-1/4" key={post.$id}>
-                <Postcard {...post} isAuthor={isAuthor} />
-              </div>
+              const isAuthor =
+                post && userData ? post.userId === userData.$id : false;
+              return (
+                <div className="p-2 w-1/4" key={post.$id}>
+                  <Postcard {...post} isAuthor={isAuthor} />
+                </div>
               );
             })}
         </div>
@@ -98,7 +105,9 @@ function Home() {
           >
             Previous
           </button>
-        ) : <span />}
+        ) : (
+          <span />
+        )}
         {hasMore ? (
           <button
             onClick={() => setPage(page + 1)}
@@ -106,7 +115,9 @@ function Home() {
           >
             Next
           </button>
-        ) : <span />}
+        ) : (
+          <span />
+        )}
       </div>
     </div>
   );

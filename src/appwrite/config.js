@@ -91,7 +91,9 @@ export class Service {
     }
   }
 
-  async getPosts(queries = [Query.equal('status', 'active'), Query.orderDesc('$createdAt')]) {
+  async getPosts(
+    queries = [Query.equal('status', 'active'), Query.orderDesc('$createdAt')]
+  ) {
     try {
       return await this.database.listRows({
         databaseId: conf.appwriteDatabaseId,

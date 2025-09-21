@@ -17,20 +17,20 @@ function MyPosts() {
 
   useEffect(() => {
     setLoading(true);
-      service
-        .getPosts([
-          Query.equal('status', 'active'),
-          Query.equal('userId', userData.$id),
-          Query.orderDesc('$createdAt'),
-          Query.limit(4),
-          Query.offset((page - 1) * 4)
-        ])
-        .then((posts) => {
-            setPosts(posts.rows);
-            setHasMore(posts.rows.length === 4);
-            // dispatch(addPosts(posts.rows || []));
-            setLoading(false);
-        });
+    service
+      .getPosts([
+        Query.equal('status', 'active'),
+        Query.equal('userId', userData.$id),
+        Query.orderDesc('$createdAt'),
+        Query.limit(4),
+        Query.offset((page - 1) * 4),
+      ])
+      .then((posts) => {
+        setPosts(posts.rows);
+        setHasMore(posts.rows.length === 4);
+        // dispatch(addPosts(posts.rows || []));
+        setLoading(false);
+      });
   }, [page]);
 
   if (loading) return <Loader />;
@@ -69,7 +69,9 @@ function MyPosts() {
           >
             Previous
           </button>
-        ) : <span />}
+        ) : (
+          <span />
+        )}
         {hasMore ? (
           <button
             onClick={() => setPage(page + 1)}
@@ -77,7 +79,9 @@ function MyPosts() {
           >
             Next
           </button>
-        ) : <span />}
+        ) : (
+          <span />
+        )}
       </div>
     </div>
   );
